@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Billing Web App</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f5f5fa; }
+    h1 { color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; background: white; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #4f46e5; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Billing Web App — Connection Test</h1>
+  <p id="status">Loading invoices from Google Sheets...</p>
+  <table id="invoiceTable" style="display:none;">
+    <thead>
+      <tr><th>ID</th><th>Date</th><th>Grand Total</th><th>Synced</th></tr>
+    </thead>
+    <tbody id="invoiceBody"></tbody>
+  </table>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzrkvo62ewOHLzY3iyPO1MsEN0E9evXPYdPV55pFV2tY8kojo8drnY4qCzbEWDvwK2/exec';
+
+    fetch(SCRIPT_URL)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('status').textContent =
+          `Connected! Found ${data.length} invoices.`;
+        const tbody = document.getElementById('invoiceBody');
+        data.forEach(invoice => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${invoice.id.substring(0, 8)}...</td>
+            <td>${invoice.dateTime}</td>
+            <td>Rs. ${invoice.grandTotal}</td>
+            <td>${invoice.synced}</td>
+          `;
+          tbody.appendChild(row);
+        });
+        document.getElementById('invoiceTable').style.display = 'table';
+      })
+      .catch(err => {
+        document.getElementById('status').textContent =
+          'Connection failed: ' + err.message;
+      });
+  </script>
+</body>
+</html>
