@@ -1,73 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Billing Web App</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { font-family: sans-serif; margin: 0; background: #f5f5fa; display: flex; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Web App</title>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg0:#0a0a0a;--bg1:#141414;--bg2:#1c1c1c;--bg3:#242424;
+  --border:rgba(255,255,255,0.08);
+  --text0:#f0ede8;--text1:#c8c4be;--text2:#8a8680;--text3:#5a5754;
+  --accent:#e8b84b;--accent-dim:rgba(232,184,75,0.15);--accent-text:#f5c96e;
+  --green:#4caf7d;--red:#e05c5c;
+  --radius:10px;
+  --font:'Poppins',sans-serif;--mono:'DM Mono',monospace;--heading:'League Spartan',sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg0); color: var(--text0); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
 
-    /* Sidebar */
-    nav { width: 220px; background: #1e1b4b; min-height: 100vh; padding: 20px 0; }
-    nav h2 { color: white; text-align: center; font-size: 18px; margin-bottom: 20px; }
-    nav a { display: block; color: #c7c7f5; padding: 12px 20px; text-decoration: none; cursor: pointer; }
-    nav a:hover, nav a.active { background: #4f46e5; color: white; }
+#sidebar { width: 224px; min-width: 224px; background: var(--bg1); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+.sidebar-brand { padding: 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.brand-logo { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--bg0); }
+.brand-name { font-family: var(--heading); font-weight: 700; font-size: 14px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; color: var(--text2); font-size: 13px; cursor: pointer; position: relative; }
+.nav-item:hover { background: var(--bg2); color: var(--text0); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent-text); font-weight: 500; }
+.nav-item.active::before { content:''; position:absolute; left:0; top:4px; bottom:4px; width:3px; background:var(--accent); border-radius:0 3px 3px 0; }
 
-    /* Main content */
-    main { flex: 1; padding: 30px; }
-    h1 { color: #333; margin-top: 0; }
+#main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { height: 50px; background: var(--bg1); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; }
+.topbar-title { font-family: var(--heading); font-weight: 600; font-size: 15px; }
+.page-content { flex: 1; overflow-y: auto; padding: 24px; }
 
-    /* Summary cards */
-    .cards { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
-    .card { background: white; border-radius: 10px; padding: 20px; min-width: 180px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .card .label { color: #888; font-size: 14px; }
-    .card .value { font-size: 28px; font-weight: bold; color: #1e1b4b; margin-top: 6px; }
+.cards { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; min-width: 180px; }
+.card .label { color: var(--text2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.card .value { font-family: var(--heading); font-size: 26px; font-weight: 700; color: var(--text0); margin-top: 8px; }
 
-    table { border-collapse: collapse; width: 100%; background: white; border-radius: 10px; overflow: hidden; }
-    th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
-    th { background: #4f46e5; color: white; }
+table { border-collapse: collapse; width: 100%; background: var(--bg2); border-radius: var(--radius); overflow: hidden; }
+th, td { border-bottom: 1px solid var(--border); padding: 10px 14px; text-align: left; font-size: 13px; }
+th { background: var(--bg3); color: var(--text2); font-weight: 500; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+td { color: var(--text1); }
 
-    .placeholder { color: #888; font-size: 18px; padding: 40px; text-align: center; }
-  </style>
+.placeholder { color: var(--text3); font-size: 16px; padding: 60px; text-align: center; }
+h1 { font-family: var(--heading); margin-bottom: 20px; }
+h2 { font-family: var(--heading); font-size: 15px; margin: 24px 0 10px; color: var(--text1); }
+</style>
 </head>
 <body>
-  <nav>
-    <h2>Billing Web App</h2>
-    <a data-page="dashboard" class="active">Dashboard</a>
-    <a data-page="customer">Customer</a>
-    <a data-page="inventory">Inventory</a>
-    <a data-page="invoice">Invoice</a>
-    <a data-page="return">Return</a>
-    <a data-page="expenses">Expenses</a>
-    <a data-page="report">Report</a>
-    <a data-page="cashdrawer">Cash Drawer</a>
-    <a data-page="purchaseorder">Purchase Order</a>
-    <a data-page="stockalert">Stock Alert</a>
-    <a data-page="settings">Settings</a>
-  </nav>
-
-  <main id="mainContent">
-    <h1>Dashboard</h1>
-    <div class="cards" id="summaryCards">
-      <div class="card"><div class="label">Total Revenue</div><div class="value" id="totalRevenue">...</div></div>
-      <div class="card"><div class="label">Total Invoices</div><div class="value" id="totalInvoices">...</div></div>
-      <div class="card"><div class="label">Total Products</div><div class="value" id="totalProducts">...</div></div>
-      <div class="card"><div class="label">Today's Sales</div><div class="value" id="todaySales">...</div></div>
+  <div id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">B</div>
+      <div class="brand-name">Billing App</div>
     </div>
-    <h2>Recent Invoices</h2>
-    <table>
-      <thead><tr><th>ID</th><th>Date</th><th>Grand Total</th></tr></thead>
-      <tbody id="recentInvoicesBody"></tbody>
-    </table>
-  </main>
+    <div id="navList">
+      <div class="nav-item active" data-page="dashboard">Dashboard</div>
+      <div class="nav-item" data-page="customer">Customer</div>
+      <div class="nav-item" data-page="inventory">Inventory</div>
+      <div class="nav-item" data-page="invoice">Invoice</div>
+      <div class="nav-item" data-page="return">Return</div>
+      <div class="nav-item" data-page="expenses">Expenses</div>
+      <div class="nav-item" data-page="report">Report</div>
+      <div class="nav-item" data-page="cashdrawer">Cash Drawer</div>
+      <div class="nav-item" data-page="purchaseorder">Purchase Order</div>
+      <div class="nav-item" data-page="stockalert">Stock Alert</div>
+      <div class="nav-item" data-page="settings">Settings</div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="topbar"><div class="topbar-title" id="pageTitle">Dashboard</div></div>
+    <div class="page-content" id="mainContent">
+      <h1>Dashboard</h1>
+      <div class="cards">
+        <div class="card"><div class="label">Total Revenue</div><div class="value" id="totalRevenue">...</div></div>
+        <div class="card"><div class="label">Total Invoices</div><div class="value" id="totalInvoices">...</div></div>
+        <div class="card"><div class="label">Total Products</div><div class="value" id="totalProducts">...</div></div>
+        <div class="card"><div class="label">Today's Sales</div><div class="value" id="todaySales">...</div></div>
+      </div>
+      <h2>Recent Invoices</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Date</th><th>Grand Total</th></tr></thead>
+        <tbody id="recentInvoicesBody"></tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzrkvo62ewOHLzY3iyPO1MsEN0E9evXPYdPV55pFV2tY8kojo8drnY4qCzbEWDvwK2/exec';
 
     async function loadDashboard() {
       const [invoicesRes, productsRes] = await Promise.all([
-        fetch(SCRIPT_URL),
-        fetch(SCRIPT_URL + '?type=product')
+        fetch(SCRIPT_URL), fetch(SCRIPT_URL + '?type=product')
       ]);
       const invoices = await invoicesRes.json();
       const products = await productsRes.json();
@@ -78,8 +102,7 @@
       document.getElementById('totalProducts').textContent = products.length;
 
       const today = new Date().toISOString().split('T')[0];
-      const todayTotal = invoices
-        .filter(inv => (inv.dateTime || '').startsWith(today))
+      const todayTotal = invoices.filter(inv => (inv.dateTime||'').startsWith(today))
         .reduce((sum, inv) => sum + Number(inv.grandTotal || 0), 0);
       document.getElementById('todaySales').textContent = 'Rs. ' + todayTotal.toFixed(2);
 
@@ -91,18 +114,15 @@
       });
     }
 
-    // Sidebar navigation — Dashboard is real, others are placeholders for now.
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-        link.classList.add('active');
-        const page = link.dataset.page;
-        const main = document.getElementById('mainContent');
-        if (page === 'dashboard') {
-          location.reload(); // simplest way to restore the real dashboard for now
-        } else {
-          main.innerHTML = `<h1>${link.textContent}</h1><div class="placeholder">${link.textContent} — coming soon</div>`;
-        }
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        const label = item.textContent;
+        document.getElementById('pageTitle').textContent = label;
+        if (item.dataset.page === 'dashboard') { location.reload(); return; }
+        document.getElementById('mainContent').innerHTML =
+          `<h1>${label}</h1><div class="placeholder">${label} — coming soon</div>`;
       });
     });
 
