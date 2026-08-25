@@ -6,14 +6,56 @@
 <title>Billing Web App</title>
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  <style>
+/* Existing CSS... */
+
+/* Paste the new responsive and APK design styles here */
+body {
+  background: var(--bg0);
+}
+
+#sidebar,
+.topbar {
+  background: var(--bg1);
+}
+
+/* ...remaining styles... */
+
+@media (max-width: 768px) {
+  body {
+    display: block;
+    overflow: auto;
+  }
+
+  /* ...remaining responsive styles... */
+}
+</style>
+  
+/* Replace the existing :root block */
 :root {
-  --bg0:#0a0a0a;--bg1:#141414;--bg2:#1c1c1c;--bg3:#242424;
-  --border:rgba(255,255,255,0.08);
-  --text0:#f0ede8;--text1:#c8c4be;--text2:#8a8680;--text3:#5a5754;
-  --accent:#e8b84b;--accent-dim:rgba(232,184,75,0.15);--accent-text:#f5c96e;
-  --green:#4caf7d;--red:#e05c5c;
-  --radius:10px;
-  --font:'Poppins',sans-serif;--mono:'DM Mono',monospace;--heading:'League Spartan',sans-serif;
+  --bg0: #393078;
+  --bg1: #40347d;
+  --bg2: #51478d;
+  --bg3: #5b5197;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --text0: #ffffff;
+  --text1: #f0edf5;
+  --text2: #c6c0d2;
+  --text3: #9992aa;
+
+  --accent: #a8ed8f;
+  --accent-dim: rgba(168, 237, 143, 0.15);
+  --accent-text: #a8ed8f;
+
+  --green: #55b887;
+  --red: #ed514b;
+  --orange: #f2a51a;
+
+  --radius: 20px;
+  --font: 'Poppins', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --heading: 'League Spartan', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font); background: var(--bg0); color: var(--text0); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
